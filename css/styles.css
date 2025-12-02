@@ -12,6 +12,7 @@
 	margin: 0;
 	padding: 0;
 	cursor: text; /* Cursor sempre I-beam */
+	background-image: url("./background/bg.png");
 }
 
 body {

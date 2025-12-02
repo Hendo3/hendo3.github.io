@@ -1,6 +1,15 @@
 // Escopo elevado para acesso em outros listeners
 let cmdInput;
 
+function updateLocalhostLink() {
+	const localhostLink = document.getElementById('localhost');
+	if (localhostLink) {
+		const hostname = window.location.hostname;
+		const port = window.location.port ? `:${window.location.port}` : '';
+		localhostLink.href = `http://${hostname}${port}`;
+	}
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	// --- RELÓGIO DIGITAL ---
 	function updateClock() {
@@ -31,93 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
-	function updateLocalhostLink() {
-		const localhostLink = document.getElementById('localhost');
-		if (localhostLink) {
-			const hostname = window.location.hostname;
-			const port = window.location.port ? `:${window.location.port}` : '';
-			localhostLink.href = `http://${hostname}${port}`;
-		}
-	}
-
-	// --- OBTENÇÃO / DEFINIÇÃO DE USUÁRIO ---
-	function getLoggedUsername() {
-		// Browsers não expõem usuário do SO por segurança. Estratégia:
-		// 1. Usa localStorage.
-		// 2. Se não existir, solicita via prompt uma única vez.
-		// 3. Fallback para um identificador derivado do userAgent.
-		let stored = localStorage.getItem('username');
-		if (!stored) {
-			stored = prompt('Digite seu usuário:')?.trim();
-			if (stored) {
-				localStorage.setItem('username', stored);
-			} else {
-				stored = navigator.userAgent.split(' ')[0];
-			}
-		}
-		return stored;
-	}
-
-	// --- AES-GCM (Web Crypto) ---
-	function bytesToBase64(bytes) {
-		let bin = '';
-		const arr = new Uint8Array(bytes);
-		for (let i = 0; i < arr.length; i++) bin += String.fromCharCode(arr[i]);
-		return btoa(bin);
-	}
-
-	function base64ToArrayBuffer(b64) {
-		const bin = atob(b64);
-		const len = bin.length;
-		const buf = new ArrayBuffer(len);
-		const arr = new Uint8Array(buf);
-		for (let i = 0; i < len; i++) arr[i] = bin.charCodeAt(i);
-		return buf;
-	}
-
-	async function getOrCreateAesKey() {
-		const existing = localStorage.getItem('aes_key_b64');
-		if (existing) {
-			const raw = base64ToArrayBuffer(existing);
-			return crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, true, ['encrypt', 'decrypt']);
-		}
-		const key = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
-		const raw = await crypto.subtle.exportKey('raw', key);
-		localStorage.setItem('aes_key_b64', bytesToBase64(raw));
-		return key;
-	}
-
-	async function encryptAesGcm(plaintext) {
-		const enc = new TextEncoder();
-		const data = enc.encode(plaintext);
-		const iv = crypto.getRandomValues(new Uint8Array(12)); // 96-bit IV recomendado
-		const key = await getOrCreateAesKey();
-		const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data);
-		return { ciphertextB64: bytesToBase64(cipherBuf), ivB64: bytesToBase64(iv) };
-	}
-
-	async function setUserName() {
-		const user = getLoggedUsername();
-		const promptSign = document.querySelector('.prompt-sign');
-		if (promptSign) promptSign.innerText = `${user}@error:> `;
-
-		const encryptedEl = document.getElementById('encryptedUser');
-		if (!window.crypto || !window.crypto.subtle) {
-			if (encryptedEl) encryptedEl.innerText = 'WebCrypto indisponível (requer contexto seguro: https:// ou localhost)';
-			return;
-		}
-		try {
-			const { ciphertextB64, ivB64 } = await encryptAesGcm(user);
-			if (encryptedEl) encryptedEl.innerText = ciphertextB64;
-			localStorage.setItem('user_encrypted_gcm', ciphertextB64);
-			localStorage.setItem('user_iv_b64', ivB64);
-		} catch (err) {
-			console.error('Falha ao criptografar com AES-GCM:', err);
-			if (encryptedEl) encryptedEl.innerText = 'Erro de criptografia';
-		}
-	}
-
-	setUserName();
+	// Chama a função para atualizar o link ao carregar a página
+	updateLocalhostLink();
 
 	// --- LOGS ALEATÓRIOS ---
 	function initRandomLogs() {
@@ -173,6 +97,57 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	initRandomLogs();
+
+	function initGlobalGlitchEffect() {
+		const glitchChars = '!@#$%^&*()-_=+[]{}|;:",.<>?/\\';
+		const revertDelay = 400;
+		const interval = 10000;
+
+		function collectTextNodes(root) {
+			const nodes = [];
+			const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+			let current;
+			while ((current = walker.nextNode())) {
+				if (current.textContent && current.textContent.trim().length) {
+					nodes.push(current);
+				}
+			}
+			return nodes;
+		}
+
+		function applyGlitch() {
+			const textNodes = collectTextNodes(document.body);
+			if (!textNodes.length) return;
+
+			const affected = new Map();
+			const glitches = Math.floor(Math.random() * 20) + 1;
+
+			for (let i = 0; i < glitches; i++) {
+				const node = textNodes[Math.floor(Math.random() * textNodes.length)];
+				if (!node || !node.textContent || !node.textContent.length) continue;
+
+				if (!affected.has(node)) {
+					affected.set(node, node.textContent);
+				}
+
+				const baseText = node.textContent;
+				const charIndex = Math.floor(Math.random() * baseText.length);
+				const replacement = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+				node.textContent = baseText.slice(0, charIndex) + replacement + baseText.slice(charIndex + 1);
+			}
+
+			setTimeout(() => {
+				affected.forEach((original, node) => {
+					node.textContent = original;
+				});
+			}, revertDelay);
+		}
+
+		applyGlitch();
+		setInterval(applyGlitch, interval);
+	}
+
+	initGlobalGlitchEffect();
 
 	// --- SISTEMA DE FOCO AUTOMÁTICO ---
 	document.addEventListener('click', () => {
