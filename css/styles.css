@@ -1,0 +1,141 @@
+:root {
+	--bg-color: #050505;
+	--main-color: #00ff41; /* Verde Matrix */
+	--alert-color: #ff3c00; /* Laranja erro/aviso */
+	--dim-color: #008F11;
+	--font-stack: 'Terminus', 'Fira Code', 'Courier New', monospace;
+	--crt-flicker: 0.03;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	cursor: text; /* Cursor sempre I-beam */
+}
+
+body {
+	background-color: var(--bg-color);
+	color: var(--main-color);
+	font-family: var(--font-stack);
+	height: 100vh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	padding: 40px;
+	font-size: 14px;
+	text-shadow: 0 0 4px rgba(0, 255, 65, 0.4);
+}
+
+/* --- CRT SCANLINES OVERLAY --- */
+body::before {
+	content: " ";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0,  0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba, 255, 0, 0.02), rgba(0, 0, 255, 0.06);
+	z-index: 2;
+	background-size: 100% 2px, 3px 100%;
+	pointer-events: none;
+}
+
+/* --- LAYOUT --- */
+#header {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid var(--dim-color);
+	padding-bottom: 10px;
+	margin-bottom: 40px;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+#clock {
+	font-weight: bold;
+}
+
+#main-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+	flex-grow: 1;
+	overflow-y: auto;
+	padding-right: 10px;}
+
+.sector {
+	display: flex;
+	flex-direction: column;
+}
+
+.sector-title {
+	color: var(--dim-color);
+	margin-bottom: 15px;
+	border-bottom: 1px dashed var(--dim-color);
+	display: inline-block;
+	width: 100%;
+	padding-bottom: 5px;
+}
+
+a {
+	color: var(--main-color);
+	text-decoration: none;
+	padding: 5px 0;
+	display: block;
+	transition: all 0.1s;
+	opacity: 0.8;
+}
+
+a:hover {
+	background-color: var(--main-color);
+	color: var(--bg-color);
+	opacity: 1;
+	padding-left: 10px; /* Slide effect */
+}
+
+a::before { content: "./"; color: var(--dim-color); margin-right: 5px;}
+/* --- INPUT AREA --- */
+#input-zone {
+	margin-top: auto;
+	border-top: 1px solid var(--dim-color);
+	padding-top: 20px;
+	display: flex;
+	align-items: center;
+}
+
+.prompt-sign {
+	margin-right: 10px;
+	font-weight: bold;
+}
+
+#cmd {
+	background: transparent;
+	border: none;
+	color: var(--main-color);
+	font-family: var(--font-stack);
+	font-size: 18px;
+	width: 100%;
+	outline: none;
+	text-shadow: 0 0 4px rgba(0, 255, 65, 0.4);
+	text-transform: lowercase;
+}
+
+@keyframes flicker {
+	0% { opacity: 0.97; }
+	5% { opacity: 0.95; }
+	10% { opacity: 0.9; }
+	15% { opacity: 0.95; }
+	20% { opacity: 0.99; }
+	100% { opacity: 0.94; }
+}
+
+#container {
+	animation: flicker 0.15s infinite;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
