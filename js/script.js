@@ -1,13 +1,105 @@
 // Escopo elevado para acesso em outros listeners
 let cmdInput;
 
-function updateLocalhostLink() {
-	const localhostLink = document.getElementById('localhost');
-	if (localhostLink) {
+
+const hiddenLinkTargets = {
+	1: () => 'https://github.com/Hendo3',
+	2: () => 'https://mail.google.com/',
+	3: () => 'https://temp-mail.org/pt/',
+	4: () => 'https://gemini.google.com/',
+	5: () => {
 		const hostname = window.location.hostname;
 		const port = window.location.port ? `:${window.location.port}` : '';
-		localhostLink.href = `http://${hostname}${port}`;
+		return `http://${hostname}${port}`;
+	},
+	6: () => 'https://youtube.com',
+	7: () => 'https://spotify.com',
+	8: () => 'https://web.whatsapp.com',
+	9: () => 'https://www.crunchyroll.com',
+	10: () => 'https://mangadex.org',
+	11: () => 'https://drive.google.com/drive/u/0/folders/1le1H6tlSb3wk-pdka0BMKyTNzB6IydFt',
+	12: () => 'https://drive.google.com/drive/u/0/folders/1ANMek8NrkyQih9o_h6_mWjPX--UhbeZw',
+	13: () => 'https://drive.google.com/drive/u/0/folders/1A8AOrQb1yPZRYvcEqesOohAE04yO0-eo',
+	14: () => 'https://drive.google.com/drive/u/0/folders/1oneeFAeYPraeiroYLA1t0SSRFqNoKIgm',
+	15: () => 'https://gmail.com',
+	16: () => 'https://tuta.com',
+	17: () => 'https://store.playstation.com/pt-br/',
+	18: () => 'https://translate.google.com'
+};
+
+function getRandomLogLines() {
+	if (Array.isArray(window.CYBERPUNK_LOG_LINES) && window.CYBERPUNK_LOG_LINES.length) {
+		return window.CYBERPUNK_LOG_LINES;
 	}
+
+	return [
+		'> initializing protocols...',
+		'> loading custom.css... OK',
+		'> connection secure',
+		'> waiting for input...',
+		'> handshake established',
+		'> cache warmed',
+		'> memcheck: clean',
+		'> ping: 12ms',
+		'> dns resolve: ok',
+		'> watchdog: active',
+		'> auth token refreshed',
+		'> syncing time with NTP',
+		'> io throughput stable',
+		'> gc cycle complete',
+		'> updating routes',
+		'> link-layer: stable',
+		'> entropy source: healthy',
+		'> task queued',
+		'> task complete',
+		'> standby...'
+	];
+}
+
+function resolveHiddenLink(linkId) {
+	const target = hiddenLinkTargets[linkId];
+	return typeof target === 'function' ? target() : '';
+}
+
+function bindHiddenLinks() {
+	document.querySelectorAll('[data-link]').forEach((linkEl) => {
+		const openLink = () => {
+			const targetUrl = resolveHiddenLink(linkEl.dataset.link);
+			if (!targetUrl) return;
+			window.location.assign(targetUrl);
+		};
+
+		linkEl.addEventListener('click', (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			openLink();
+		});
+
+		linkEl.addEventListener('keydown', (event) => {
+			if (event.key === 'Enter' || event.key === ' ') {
+				event.preventDefault();
+				openLink();
+			}
+		});
+	});
+}
+
+function lockLinkCopying() {
+	document.querySelectorAll('a[data-link]').forEach((linkEl) => {
+		linkEl.draggable = false;
+
+		linkEl.addEventListener('contextmenu', (event) => {
+			event.preventDefault();
+		});
+
+		linkEl.addEventListener('dragstart', (event) => {
+			event.preventDefault();
+		});
+
+		linkEl.addEventListener('selectstart', (event) => {
+			event.preventDefault();
+		});
+	});
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,6 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 	setInterval(updateClock, 1000);
 	updateClock();
+	bindHiddenLinks();
+	lockLinkCopying();
 
 	// --- SISTEMA DE BUSCA ---
 	cmdInput = document.getElementById('cmd');
@@ -40,36 +134,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
-	// Chama a função para atualizar o link ao carregar a página
-	updateLocalhostLink();
-
 	// --- LOGS ALEATÓRIOS ---
 	function initRandomLogs() {
 		const container = document.getElementById('logs') || document.querySelector('.sector-rawlogs .sector-title + div');
 		if (!container) return;
 
-		const lines = [
-			'> initializing protocols...',
-			'> loading custom.css... OK',
-			'> connection secure',
-			'> waiting for input...',
-			'> handshake established',
-			'> cache warmed',
-			'> memcheck: clean',
-			'> ping: 12ms',
-			'> dns resolve: ok',
-			'> watchdog: active',
-			'> auth token refreshed',
-			'> syncing time with NTP',
-			'> io throughput stable',
-			'> gc cycle complete',
-			'> updating routes',
-			'> link-layer: stable',
-			'> entropy source: healthy',
-			'> task queued',
-			'> task complete',
-			'> standby...'
-		];
+		const lines = getRandomLogLines();
 
 		const maxLines = 30;
 
@@ -94,14 +164,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			appendLine(lines[Math.floor(Math.random() * lines.length)]);
 			setTimeout(tick, next);
 		})();
-	}
+	} 
 
 	initRandomLogs();
 
 	function initGlobalGlitchEffect() {
 		const glitchChars = '!@#$%^&*()-_=+[]{}|;:",.<>?/\\';
 		const revertDelay = 400;
-		const interval = 10000;
+		const interval = 10000; 
 
 		function collectTextNodes(root) {
 			const nodes = [];
@@ -120,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (!textNodes.length) return;
 
 			const affected = new Map();
-			const glitches = Math.floor(Math.random() * 20) + 1;
+			const glitches = Math.floor(Math.random() * 20) + 1; // aplica entre 1 e 20 glitches por ciclo 
 
 			for (let i = 0; i < glitches; i++) {
 				const node = textNodes[Math.floor(Math.random() * textNodes.length)];
@@ -144,10 +214,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		applyGlitch();
-		setInterval(applyGlitch, interval);
+		setInterval(applyGlitch, interval); 
 	}
 
-	initGlobalGlitchEffect();
+	initGlobalGlitchEffect(); // a cada 10 segundos, aplica o efeito global de glitch em textos da página durante 400ms 
 
 	// --- SISTEMA DE FOCO AUTOMÁTICO ---
 	document.addEventListener('click', () => {
@@ -156,15 +226,35 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Simulação de status aleatório ao carregar
+//window.addEventListener('load', () => {
+//	const statuses = ['ONLINE', 'OFFLINE', 'MAINTENANCE', 'UPDATING'];
+//	const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+//	const statusEl = document.getElementById('status');
+//	if (statusEl) statusEl.innerText = randomStatus;
+//});
+
+// verifica o status da rede a cada 15 segundos e atualiza o status na interface
 window.addEventListener('load', () => {
-	const statuses = ['ONLINE', 'OFFLINE', 'MAINTENANCE', 'UPDATING'];
-	const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 	const statusEl = document.getElementById('status');
-	if (statusEl) statusEl.innerText = randomStatus;
+	if (!statusEl) return;
+
+	function updateNetworkStatus() {
+		const isOnline = navigator.onLine;
+		statusEl.innerText = isOnline ? 'ONLINE' : 'OFFLINE';
+	}
+
+	window.addEventListener('online', updateNetworkStatus);
+	window.addEventListener('offline', updateNetworkStatus);
+	updateNetworkStatus();
 });
 
+// geração de ID de nó aleatório hexadecimal para exibição
 window.addEventListener('load', () => {
-	updateLocalhostLink();
+	const nodeIdEl = document.getElementById('node-id');
+	if (nodeIdEl) {
+		const randomId = Math.random().toString(16).slice(2, 10).toUpperCase();
+		nodeIdEl.innerText = randomId;
+	}
 });
 
 // mascarar url da barra de endereços

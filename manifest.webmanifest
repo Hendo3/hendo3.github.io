@@ -1,0 +1,24 @@
+{
+	"name": "DATA_CORRUPTED",
+	"short_name": "DATA",
+	"description": "Terminal cyberpunk site hosted on GitHub Pages.",
+	"start_url": "./",
+	"scope": "./",
+	"display": "standalone",
+	"background_color": "#050505",
+	"theme_color": "#050505",
+	"icons": [
+		{
+			"src": "assets/favicon/favicon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any"
+		},
+		{
+			"src": "assets/favicon/favicon-maskable.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "maskable"
+		}
+	]
+}
