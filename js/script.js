@@ -3,57 +3,58 @@ let cmdInput;
 
 
 const hiddenLinkTargets = {
-	1: () => 'https://github.com/Hendo3',
+	1: () => randomizeUrlValue('https://github.com/Hendo3'),
 	2: () => 'https://mail.google.com/',
-	3: () => 'https://temp-mail.org/pt/',
-	4: () => 'https://gemini.google.com/',
-	5: () => {
+	3: () => 'https://mail.proton.me',
+	4: () => 'https://temp-mail.org/pt/',
+	5: () => 'https://gemini.google.com/',
+	6: () => {
 		const hostname = window.location.hostname;
 		const port = window.location.port ? `:${window.location.port}` : '';
 		return `http://${hostname}${port}`;
 	},
-	6: () => 'https://youtube.com',
-	7: () => 'https://spotify.com',
-	8: () => 'https://web.whatsapp.com',
-	9: () => 'https://www.crunchyroll.com',
-	10: () => 'https://mangadex.org',
-	11: () => 'https://drive.google.com/drive/u/0/folders/1le1H6tlSb3wk-pdka0BMKyTNzB6IydFt',
-	12: () => 'https://drive.google.com/drive/u/0/folders/1ANMek8NrkyQih9o_h6_mWjPX--UhbeZw',
-	13: () => 'https://drive.google.com/drive/u/0/folders/1A8AOrQb1yPZRYvcEqesOohAE04yO0-eo',
-	14: () => 'https://drive.google.com/drive/u/0/folders/1oneeFAeYPraeiroYLA1t0SSRFqNoKIgm',
-	15: () => 'https://gmail.com',
-	16: () => 'https://tuta.com',
-	17: () => 'https://store.playstation.com/pt-br/',
-	18: () => 'https://translate.google.com'
+	7: () => 'https://youtube.com',
+	8: () => 'https://spotify.com',
+	9: () => 'https://web.whatsapp.com',
+	10: () => 'https://www.crunchyroll.com',
+	11: () => 'https://mangadex.org',
+	12: () => 'https://drive.google.com/drive/u/0/folders/1le1H6tlSb3wk-pdka0BMKyTNzB6IydFt',
+	13: () => 'https://drive.google.com/drive/u/0/folders/1ANMek8NrkyQih9o_h6_mWjPX--UhbeZw',
+	14: () => 'https://drive.google.com/drive/u/0/folders/1A8AOrQb1yPZRYvcEqesOohAE04yO0-eo',
+	15: () => 'https://drive.google.com/drive/u/0/folders/1oneeFAeYPraeiroYLA1t0SSRFqNoKIgm',
+	16: () => 'https://gmail.com',
+	17: () => 'https://tuta.com',
+	18: () => 'https://store.playstation.com/pt-br/',
+	19: () => 'https://translate.google.com'
 };
 
 function getRandomLogLines() {
-	if (Array.isArray(window.CYBERPUNK_LOG_LINES) && window.CYBERPUNK_LOG_LINES.length) {
-		return window.CYBERPUNK_LOG_LINES;
-	}
-
-	return [
-		'> initializing protocols...',
-		'> loading custom.css... OK',
-		'> connection secure',
-		'> waiting for input...',
-		'> handshake established',
-		'> cache warmed',
-		'> memcheck: clean',
-		'> ping: 12ms',
-		'> dns resolve: ok',
-		'> watchdog: active',
-		'> auth token refreshed',
-		'> syncing time with NTP',
-		'> io throughput stable',
-		'> gc cycle complete',
-		'> updating routes',
-		'> link-layer: stable',
-		'> entropy source: healthy',
-		'> task queued',
-		'> task complete',
-		'> standby...'
-	];
+	// get log-lines.json js/log-lines.json and return as array of strings
+	const lines = fetch('js/log-lines.json')
+		.then(response => response.json())
+		.then(data => {
+			if (data && data.keys && data.keys.items) {
+				console.log('Fetched log lines:', data.keys.items);
+				let lines = data.keys.items;
+				if (Array.isArray(lines)) {
+					return lines;
+			} else {
+				console.error('Invalid log lines data structure:', data);
+				return lines;
+			}
+		} else {
+			console.error('Invalid log lines data structure:', data);
+			return lines;
+		}
+	})
+		.catch(error => {
+			console.error('Error fetching log lines:', error);
+			return lines;
+		});
+	console.log('Log lines:', lines);
+	return lines.finally(() => {
+		console.log('Finished fetching log lines.');
+	});
 }
 
 function resolveHiddenLink(linkId) {
@@ -155,16 +156,21 @@ document.addEventListener('DOMContentLoaded', () => {
 			container.scrollTop = container.scrollHeight;
 		}
 
-		// Semeia algumas linhas iniciais
-		for (let i = 0; i < 4; i++) appendLine(lines[i]);
+		// pega uma linha aleatória do array de logs e adiciona ao container
+		async function addRandomLogLine() {
+			const resolvedLines = await lines;
+			if (!resolvedLines || !resolvedLines.length) return;
 
+			const randomLine = resolvedLines[Math.floor(Math.random() * resolvedLines.length)];
+			appendLine(randomLine);
+		}
 		// Loop com intervalo variável
 		(function tick() {
 			const next = 800 + Math.random() * 1700;
-			appendLine(lines[Math.floor(Math.random() * lines.length)]);
+			addRandomLogLine();
 			setTimeout(tick, next);
 		})();
-	} 
+	}
 
 	initRandomLogs();
 
@@ -224,14 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (cmdInput) cmdInput.focus();
 	});
 });
-
-// Simulação de status aleatório ao carregar
-//window.addEventListener('load', () => {
-//	const statuses = ['ONLINE', 'OFFLINE', 'MAINTENANCE', 'UPDATING'];
-//	const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-//	const statusEl = document.getElementById('status');
-//	if (statusEl) statusEl.innerText = randomStatus;
-//});
 
 // verifica o status da rede a cada 15 segundos e atualiza o status na interface
 window.addEventListener('load', () => {
