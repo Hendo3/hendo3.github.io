@@ -1,0 +1,132 @@
+{
+  "commands": [
+    {
+      "command": [
+        "add"
+      ],
+      "description": "Add link",
+      "usage": [
+        "add <sector> | <name> | <url>"
+      ]
+    },
+    {
+      "command": [
+        "edit"
+      ],
+      "description": "Change URL, name or sector",
+      "usage": [
+        "edit <ID/name> | <url>",
+        "edit <ID/name> | <sector> | <name> | <url>"
+      ]
+    },
+    {
+      "command": [
+        "list",
+        "ls"
+      ],
+      "description": "List links and IDs",
+      "usage": [
+        "list [sector]"
+      ]
+    },
+    {
+      "command": [
+        "remove",
+        "rm"
+      ],
+      "description": "Remove link",
+      "usage": [
+        "remove <ID/name>"
+      ]
+    },
+    {
+      "command": [
+        "sector"
+      ],
+      "description": "Manage sectors; the destination receives links from a removed sector.",
+      "usage": [
+        "sector list",
+        "sector add <id> | <name>",
+        "sector rename <id> | <name>",
+        "sector move <id> <position>",
+        "sector remove <id> [destination]"
+      ]
+    },
+    {
+      "command": [
+        "clear",
+        "cls"
+      ],
+      "description": "Clear logs",
+      "usage": [
+        "clear"
+      ]
+    },
+    {
+      "command": [
+        "clearlinks",
+        "cl"
+      ],
+      "description": "Remove all saved links, keeping the sectors",
+      "usage": [
+        "clearlinks"
+      ]
+    },
+    {
+      "command": [
+        "alias"
+      ],
+      "description": "Save command shortcut",
+      "usage": [
+        "alias <name>=\"<command>\""
+      ]
+    },
+    {
+      "command": [
+        "unalias"
+      ],
+      "description": "Remove an alias",
+      "usage": [
+        "unalias <name>"
+      ]
+    },
+    {
+      "command": [
+        "aliases"
+      ],
+      "description": "List all aliases",
+      "usage": [
+        "aliases"
+      ]
+    },
+    {
+      "command": [
+        "help",
+        "usage"
+      ],
+      "description": "Show this help message",
+      "usage": [
+        "help",
+        "<command> --help"
+      ]
+    },
+    {
+      "command": [
+        "export"
+      ],
+      "description": "Download JSON backup of links, sectors and aliases",
+      "usage": [
+        "export"
+      ]
+    },
+    {
+      "command": [
+        "import"
+      ],
+      "description": "Select a JSON file to import links, sectors and aliases. This will overwrite the current data.",
+      "usage": [
+        "import"
+      ]
+    }
+  ]
+}

@@ -4,7 +4,8 @@
 	--alert-color: rgb(255, 0, 0);
 	--dim-color: #6D0122;
 	--highlight-color: #AB0120;
-	--font-stack: 'Terminus', 'Fira Code', 'Courier New', monospace;
+	--font-stack: url(./assets/fonts/glitch.ttf) format('truetype'), 'Terminus', 'Fira Code', 'Courier New', monospace;
+	/* --font-stack: 'Terminus', 'Fira Code', 'Courier New', monospace; */
 	--crt-flicker: 0.03;
 	--page-padding: clamp(16px, 4vw, 40px);
 	--grid-gap: clamp(12px, 2vw, 20px);
@@ -15,6 +16,11 @@
 	margin: 0;
 	padding: 0;
 	cursor: text;
+	text-shadow: hsl(from var(--dim-color) (0.5) 0.5) 0px 1px 2px;
+	text-decoration: wavy;
+	text-decoration-thickness: calc(1px + var(--crt-flicker));
+	text-decoration-color: var(--highlight-color);
+	transition: all 0.3s ease-in-out;
 	/* I-Beam cursor for text selection */
 
 }
@@ -75,6 +81,13 @@ body::before {
 
 #clock {
 	font-weight: bold;
+	font-size: clamp(1.2rem, 2vw, 1.5rem);
+	font-style: italic;
+	display: flex;
+	text-decoration: wavy;
+	text-decoration-thickness: clamp(1px, 0.2vw, 2px);
+	text-decoration-color: var(--highlight-color);
+	text-shadow: hsl(from var(--dim-color) (0.5) 0.5) 0px 1px 2px;
 }
 
 #main-grid {
@@ -83,7 +96,8 @@ body::before {
 	gap: var(--grid-gap);
 	flex-grow: 1;
 	min-height: 0;
-	overflow-y: auto;
+	overflow: hidden;
+	overflow-y: hidden;
 	padding-right: 10px;
 	align-content: start;
 }
@@ -92,6 +106,11 @@ body::before {
 	display: flex;
 	flex-direction: column;
 	min-width: 0;
+	text-decoration: wavy;
+	text-decoration-thickness: clamp(1px, 0.2vw, 2px);
+	text-decoration-color: var(--highlight-color);
+	text-shadow: hsl(from var(--dim-color) (0.5) 0.5) 0px 1px 2px;
+	transition: all 0.2s ease-in-out 0.5s ease-out;
 }
 
 .sector-title {
@@ -122,10 +141,11 @@ a:hover {
 	color: var(--bg-color);
 	text-shadow: none;
 	transform: translateX(5px);
+	z-index: 2;
+	transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.2s ease-in-out, padding-left 0.2s ease-in-out;
 	opacity: 1;
 	padding-left: 10px;
-	transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.2s ease-in-out, padding-left 0.2s ease-in-out;
-	/* Slide effect */
+
 }
 
 a:focus-visible {
@@ -141,6 +161,171 @@ a::before {
 	color: var(--dim-color);
 	vertical-align: middle;
 	margin-right: 5px;
+	text-shadow: hsl(from var(--dim-color) (0.5) 0.5) 0px 1px 2px;
+	text-decoration: solid;
+	text-decoration-color: var(--highlight-color);
+}
+
+a[data-custom-link]::after {
+	content: "";
+	color: var(--dim-color);
+	font-size: 0.75em;
+	text-shadow: hsl(from var(--dim-color) (0.5) 0.5) 0px 1px 2px;
+	text-decoration: solid;
+	text-decoration-color: var(--highlight-color);
+}
+
+/* --- GOOGLE DRIVE FILE BROWSER --- */
+.drive-browser {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: min(540px, 100vw);
+	padding: clamp(18px, 4vw, 36px);
+	background: color-mix(in srgb, var(--bg-color) 96%, black);
+	border-left: 1px solid var(--main-color);
+	box-shadow: -12px 0 35px rgb(0 0 0 / 45%);
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	text-shadow: hsl(from var(--dim-color) (0.5) 0.5) 0 1px 2px;
+	text-decoration: wavy;
+	text-decoration-thickness: calc(1px + var(--crt-flicker));
+	transition: all 0.2s ease-in-out;
+	text-decoration-color: var(--dim-color);
+}
+
+.drive-browser[hidden] {
+	display: none;
+}
+
+.drive-browser__header,
+.drive-browser__toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.drive-browser__header {
+	padding-bottom: 14px;
+	border-bottom: 1px dashed var(--dim-color);
+}
+
+.drive-browser__eyebrow {
+	color: var(--dim-color);
+	font-size: 0.8em;
+	letter-spacing: 0.08em;
+}
+
+.drive-browser h2 {
+	font-size: clamp(1rem, 3vw, 1.25rem);
+	font-weight: inherit;
+	letter-spacing: 0.05em;
+}
+
+.drive-browser button,
+.drive-browser a {
+	appearance: none;
+	border: 1px solid var(--dim-color);
+	border-radius: 0;
+	background: transparent;
+	color: var(--main-color);
+	font: inherit;
+	letter-spacing: 0.04em;
+	cursor: pointer;
+	text-decoration: wavy;
+	text-decoration-color: var(--highlight-color);
+	transition: all 0.2s ease-in-out;
+	text-shadow: hsl(from var(--dim-color) (0.5) 0.5) 0px 1px 2px;
+}
+
+.drive-browser a::before {
+	content: none;
+}
+
+
+.drive-browser__close {
+	width: 36px;
+	height: 36px;
+	font-size: 1.5rem !important;
+	line-height: 1;
+}
+
+.drive-browser__toolbar {
+	align-items: stretch;
+	flex-wrap: wrap;
+}
+
+.drive-browser__back,
+.drive-browser__open-folder,
+.drive-browser__more {
+	padding: 8px 10px;
+	text-decoration: none;
+}
+
+.drive-browser__back:disabled {
+	color: var(--dim-color);
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
+.drive-browser__status {
+	min-height: 1.5em;
+	color: var(--dim-color);
+	font-size: 0.86em;
+}
+
+.drive-browser__status[data-state="error"] {
+	color: var(--alert-color);
+}
+
+.drive-browser__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow-y: auto;
+	border-top: 1px solid var(--dim-color);
+}
+
+.drive-browser__file {
+	display: block !important;
+	width: 100%;
+	padding: 10px 6px;
+	border-width: 0 0 1px !important;
+	text-align: left;
+	word-break: break-word;
+	transform: none !important;
+}
+
+.drive-browser__file:hover,
+.drive-browser__file:focus-visible,
+.drive-browser__close:hover,
+.drive-browser__close:focus-visible,
+.drive-browser__back:not(:disabled):hover,
+.drive-browser__back:not(:disabled):focus-visible,
+.drive-browser__open-folder:hover,
+.drive-browser__open-folder:focus-visible,
+.drive-browser__more:hover,
+.drive-browser__more:focus-visible {
+	background-color: var(--highlight-color);
+	color: var(--bg-color);
+	text-shadow: none;
+	outline: none;
+	padding-left: 10px;
+}
+
+.drive-browser__close:hover,
+.drive-browser__close:focus-visible {
+	padding-left: 0;
+}
+
+.drive-browser__more {
+	align-self: flex-start;
 }
 
 img,
@@ -170,6 +355,8 @@ iframe {
 	margin-right: 10px;
 	font-weight: bold;
 	flex: 0 0 auto;
+	text-shadow: hsl(from var(--dim-color) (0.5) 0.5) 0px 1px 2px;
+	text-decoration: dashed;
 }
 
 #cmd {
@@ -183,7 +370,8 @@ iframe {
 	width: 100%;
 	outline: none;
 	text-shadow: hsl(from var(--dim-color) (0.5) 0.5) 0px 1px 2px;
-	text-transform: lowercase;
+	text-decoration: dashed;
+	text-decoration-color: var(--highlight-color);
 	user-select: text;
 	-webkit-user-select: text;
 }
@@ -275,40 +463,305 @@ iframe {
 	a:hover {
 		padding-left: 6px;
 	}
+
+	.drive-browser {
+		padding: 18px;
+	}
 }
 
-@media (max-width: 740px) and (orientation: portrait) {
+
+/* Link sectors are independent of the log panel and their count/order. */
+#main-grid {
+	grid-template-columns: minmax(0, 3fr) minmax(220px, 1fr);
+}
+
+#link-sectors {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: var(--grid-gap);
+	align-content: start;
+	min-width: 0;
+}
+
+.sector-title {
+	overflow-wrap: anywhere;
+}
+
+.sector a {
+	overflow-wrap: anywhere;
+}
+
+#logs {
+	max-height: 55vh;
+	overflow-y: hidden;
+
+}
+
+#sync-status {
+	display: block;
+	font-size: 0.8em;
+	overflow-wrap: anywhere;
+}
+
+#input-zone {
+	position: relative;
+}
+
+#command-suggestions {
+	position: absolute;
+	bottom: calc(100% + 8px);
+	left: 0;
+	right: 0;
+	max-height: 38vh;
+	overflow-y: auto;
+	background: var(--bg-color);
+	border: 1px solid var(--main-color);
+	z-index: 20;
+	list-style: none;
+}
+
+#command-suggestions[hidden] {
+	display: none;
+}
+
+#command-suggestions li {
+	padding: 6px 10px;
+	cursor: pointer;
+	overflow-wrap: anywhere;
+}
+
+#command-suggestions li[aria-selected="true"] {
+	color: var(--bg-color);
+	background: var(--main-color);
+}
+
+@media (max-width: 740px) {
 	#main-grid {
-		grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-		grid-auto-flow: column;
-		grid-auto-rows: min-content;
-		padding-right: 0;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 	}
 
-	#main-grid>.sector:nth-child(1) {
-		grid-column: 1;
-		grid-row: 1;
+	#link-sectors {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 480px) {
+	#main-grid {
+		grid-template-columns: minmax(0, 1fr);
 	}
 
-	#main-grid>.sector:nth-child(2) {
-		grid-column: 1;
-		grid-row: 2;
+	#logs {
+		max-height: 25vh;
 	}
+}
+/* Header columns follow the link grid and log panel. */
+#header {
+	display: grid;
+	grid-template-columns: minmax(0, 3fr) minmax(270px, 1fr);
+	column-gap: var(--grid-gap);
+	align-content: start;
+	min-height: 78px;
+	padding-right: 10px;
+}
+#system-status, #sync-status { grid-column: 1; }
+#clock {
+	grid-column: 2;
+	grid-row: 1 / span 2;
+	justify-self: end;
+	align-self: start;
+	width: auto;
+	font-variant-numeric: tabular-nums;
+}
+#main-grid { grid-template-columns: minmax(0, 3fr) minmax(270px, 1fr); }
+.sector-rawlogs { min-height: 0; }
+#logs {
+	container-type: inline-size;
+	color: var(--dim-color);
+	font-family: 'Terminus', 'Fira Code', 'Courier New', monospace;
+	font-size: 12px;
+	line-height: 1.65;
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-width: thin;
+	scrollbar-color: var(--dim-color) transparent;
+	padding-right: 4px;
+	user-select: text;
+	-webkit-user-select: text;
+}
+#logs .log-line {
+	display: grid;
+	grid-template-columns: 10ch minmax(0, 1fr);
+	column-gap: 0.8ch;
+	align-items: baseline;
+	text-shadow: none;
+	text-decoration: none;
+}
+#logs .real-log {
+	color: #ff526b;
+	font-size: 13px;
+	margin-block: 0.65em;
+}
+#logs .log-timestamp {
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+	font-size: inherit;
+}
+#logs .log-body {
+	min-width: 0;
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+#logs .log-command {
+	display: inline;
+	font: inherit;
+	white-space: normal;
+	overflow-wrap: normal;
+}
+#logs .log-command-group {
+	display: inline-block;
+	white-space: nowrap;
+}
+#logs .log-description { display: block; margin-top: 0.25em; }
+#logs .log-prefix { white-space: nowrap; }
+#logs *, #logs { transition: none; text-shadow: none; text-decoration: none; }
+/* Give complete command groups room on narrower log panels. */
+@container (max-width: 340px) {
+	#logs .log-line { grid-template-columns: minmax(0, 1fr); }
+	#logs .log-timestamp { opacity: 0.8; }
+}
+@media (min-width: 601px) and (max-width: 740px) {
+	#header, #main-grid { grid-template-columns: minmax(0, 1fr) minmax(270px, 1fr); }
+}
+@media (max-width: 600px) {
+	#header { grid-template-columns: minmax(0, 1fr) auto; padding-right: 0; }
+	#main-grid { grid-template-columns: minmax(0, 1fr); overflow-y: auto; }
+	#logs { max-height: 35vh; }
+}
 
-	#main-grid>.sector:nth-child(3) {
-		grid-column: 1;
-		grid-row: 3;
+/* Last-resort wrapping for unusually narrow windows or enlarged text. */
+@container (max-width: 250px) {
+	#logs .log-command-group { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+}
+
+/* Phone and small-tablet layout: readable content, independent terminal. */
+@media (max-width: 900px) {
+	html { height: auto; min-height: 100%; }
+	body {
+		height: auto;
+		min-height: 100svh;
+		display: block;
+		overflow: visible;
+		padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+			calc(100px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+		font-family: 'Terminus', 'Fira Code', 'Courier New', monospace;
+		font-size: 16px;
+		line-height: 1.6;
+		color: #ff526b;
 	}
-
-	#main-grid>.sector-rawlogs {
-		grid-column: 2;
-		grid-row: 1 / span 3;
+	body::before { position: fixed; opacity: 0.3; }
+	#container { height: auto; min-height: 0; animation: none; }
+	#location { display: block; font-size: 12px; overflow-wrap: anywhere; }
+	#header {
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 4px 12px;
 		min-height: 0;
+		padding: 8px 0 16px;
+		margin-bottom: 24px;
+		letter-spacing: 0;
 	}
-
-	#main-grid>.sector-rawlogs #logs {
-		height: 100%;
-		min-height: 0;
+	#system-status { font-size: 12px; }
+	#sync-status { font-size: 11px; }
+	#clock { font-size: 20px; line-height: 1.3; }
+	#main-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 28px;
+		padding: 0;
+		overflow: visible;
+		flex: none;
+	}
+	#link-sectors {
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 24px;
+	}
+	.sector-title { color: #ff526b; font-size: 15px; margin-bottom: 8px; }
+	#link-sectors a {
+		min-height: 44px;
+		display: flex;
+		align-items: center;
+		padding: 8px 0;
+		color: #ff526b;
+		font-size: 16px;
+		line-height: 1.5;
+		overflow-wrap: anywhere;
+	}
+	#link-sectors a::before { flex-shrink: 0; }
+	#logs {
+		max-height: 60svh;
+		max-height: 60dvh;
+		min-height: 180px;
+		font-size: 14px;
+		line-height: 1.65;
+		color: #c7657a;
+		padding-right: 4px;
 		overflow-y: auto;
+		overscroll-behavior-y: auto;
+		scroll-margin-bottom: 100px;
+	}
+	#logs .real-log { font-size: 14px; margin-block: 1em; }
+	#logs .log-line { grid-template-columns: minmax(0, 1fr); margin-bottom: 0.65em; }
+	#logs .log-timestamp { font-size: 12px; opacity: 0.85; }
+	#logs .log-description { margin-top: 0.4em; }
+	#input-zone {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: var(--terminal-bottom, 0px);
+		z-index: 30;
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: center;
+		gap: 10px;
+		margin: 0;
+		padding: 12px max(16px, env(safe-area-inset-right))
+			calc(12px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+		background: var(--bg-color);
+		border-top: 1px solid var(--main-color);
+		box-shadow: 0 -6px 18px rgb(0 0 0 / 25%);
+	}
+	.prompt-sign { display: none; }
+	#username { font-size: 14px; }
+	#cmd {
+		width: 100%;
+		min-width: 0;
+		min-height: 44px;
+		font-family: inherit;
+		font-size: 16px;
+		line-height: 1.5;
+		color: #ff526b;
+	}
+	#cmd::placeholder { color: #c7657a; opacity: 1; }
+	#command-suggestions { bottom: 100%; max-height: 35dvh; margin: 0 8px; }
+	#command-suggestions li { min-height: 48px; padding: 12px; font-size: 14px; line-height: 1.5; }
+	.drive-browser { z-index: 40; height: 100dvh; width: min(540px, 100%); overflow: hidden; }
+	.drive-browser button, .drive-browser a { min-height: 44px; font-size: 15px; }
+	.drive-browser__close { min-width: 44px; }
+}
+@media (max-width: 540px) {
+	#link-sectors { grid-template-columns: minmax(0, 1fr); }
+}
+@media (hover: none) {
+	#link-sectors a:hover { transform: none; padding-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+	#container { animation: none; }
+	*, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Desktop logs are clipped at the panel boundary, never scrolled. */
+@media (min-width: 901px) {
+	#logs {
+		overflow: clip;
+		scrollbar-width: none;
 	}
 }

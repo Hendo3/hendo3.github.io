@@ -1,0 +1,133 @@
+{
+	"links": [
+		{
+			"id": "ID-BF0F6B42",
+			"sector": "dev",
+			"label": "GITHUB",
+			"url": "https://github.com/Hendo3"
+		},
+		{
+			"id": "ID-49F32DC2",
+			"sector": "dev",
+			"label": "TEMP_MAIL",
+			"url": "https://temp-mail.org/pt/"
+		},
+		{
+			"id": "ID-ECD11134",
+			"sector": "dev",
+			"label": "AI_INTERFACE",
+			"url": "https://gemini.google.com"
+		},
+		{
+			"id": "ID-FE6F53C8",
+			"sector": "dev",
+			"label": "LOCAL_SERVER",
+			"url": "/"
+		},
+		{
+			"id": "ID-B137BF1B",
+			"sector": "media",
+			"label": "VIDEO_SECTOR",
+			"url": "https://youtube.com"
+		},
+		{
+			"id": "ID-03C0ACDD",
+			"sector": "media",
+			"label": "MUSIC_APP",
+			"url": "https://spotify.com"
+		},
+		{
+			"id": "ID-97BCAA12",
+			"sector": "media",
+			"label": "COM_CHANNEL",
+			"url": "https://web.whatsapp.com"
+		},
+		{
+			"id": "ID-9A28DF27",
+			"sector": "media",
+			"label": "ANIME_SRC",
+			"url": "https://www.crunchyroll.com"
+		},
+		{
+			"id": "ID-17403932",
+			"sector": "media",
+			"label": "MANGA_SRC",
+			"url": "https://mangadex.org"
+		},
+		{
+			"id": "ID-A8C24C43",
+			"sector": "media",
+			"label": "LN_SRC",
+			"url": "https://novelmania.com.br/novels"
+		},
+		{
+			"id": "ID-0FCACC33",
+			"sector": "media",
+			"label": "SWORD_ART_ONLINE",
+			"url": "https://drive.google.com/drive/u/0/folders/1le1H6tlSb3wk-pdka0BMKyTNzB6IydFt"
+		},
+		{
+			"id": "ID-8AA71DD6",
+			"sector": "media",
+			"label": "BUNNY_GIRL",
+			"url": "https://drive.google.com/drive/u/0/folders/1ANMek8NrkyQih9o_h6_mWjPX--UhbeZw"
+		},
+		{
+			"id": "ID-7CE67D88",
+			"sector": "media",
+			"label": "RE:ZERO",
+			"url": "https://drive.google.com/drive/u/0/folders/1A8AOrQb1yPZRYvcEqesOohAE04yO0-eo"
+		},
+		{
+			"id": "ID-47FB2996",
+			"sector": "media",
+			"label": "GIMAI_SEIKATSU",
+			"url": "https://drive.google.com/drive/u/0/folders/1oneeFAeYPraeiroYLA1t0SSRFqNoKIgm"
+		},
+		{
+			"id": "ID-A1A888AE",
+			"sector": "tools",
+			"label": "UNTRUST_MAIL",
+			"url": "https://gmail.com"
+		},
+		{
+			"id": "ID-DC3F2B6B",
+			"sector": "tools",
+			"label": "CRYPTO_MAIL",
+			"url": "https://tuta.com"
+		},
+		{
+			"id": "ID-4B8F2761",
+			"sector": "tools",
+			"label": "DAILY_MAIL",
+			"url": "https://mail.proton.me/"
+		},
+		{
+			"id": "ID-A17237C1",
+			"sector": "tools",
+			"label": "PSN_STORE",
+			"url": "https://store.playstation.com/pt-br/"
+		},
+		{
+			"id": "ID-31329F77",
+			"sector": "tools",
+			"label": "TRANSLATOR",
+			"url": "https://translate.google.com"
+		}
+	],
+	"sectors": [
+		{
+			"id": "dev",
+			"label": "DEV"
+		},
+		{
+			"id": "media",
+			"label": "MEDIA"
+		},
+		{
+			"id": "tools",
+			"label": "TOOLS"
+		}
+	],
+	"aliases": {}
+}

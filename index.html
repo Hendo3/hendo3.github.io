@@ -1,74 +1,53 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en-US">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="theme-color" content="#050505">
-	<link rel="manifest" href="manifest.webmanifest">
-	<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg">
-	<link rel="stylesheet" href="css/styles.css">
+	<meta charSet="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+	<meta name="description" content="DATA_CORRUPTED - Hendo3's personal site">
+	<meta name="keywords" content="Hendo3, personal site, links, terminal, cyberpunk, data_corrupted">
+	<meta name="author" content="Belagamba Eduardo">
+	<meta name="license" content="MIT">
+	<meta name="google-drive-api-key" content="">
+	<link rel="icon" type="image/svg+xml" href="./assets/favicon/favicon.svg">
+	<link rel="license" href="https://opensource.org/licenses/MIT">
+	<link rel="manifest" href="./manifest.webmanifest">
+	<link rel="stylesheet" href="./css/styles.css">
 	<title>DATA_CORRUPTED</title>
 </head>
 
 <body>
 	<div id="container">
-		<span id="location">NODE_CONNECTED // <span id="node-id"></span></span>
+		<span id="location">
+			NODE_CONNECTED // <span id="node-id"></span>
+		</span>
 		<div id="header">
-			<span id="system-status">NET: ONLINE // <span id="status"></span></span>
-			<span id="clock">00:00:00</span>
+			<span id="system-status">
+				NET: SYNC // <span id="status"></span>
+			</span>
+			<span id="sync-status" role="status">NET: SYNC</span>
+			<span id="clock" aria-label="Local time">00:00:00</span>
 		</div>
 
 		<div id="main-grid">
-			<div class="sector">
-				<span class="sector-title">/// SECTOR_01 [DEV]</span>
-				<a data-link="1" role="link" tabindex="0">GITHUB</a>
-				<a data-link="2" role="link" tabindex="0">MAIL</a>
-				<a data-link="3" role="link" tabindex="0">CRYPTO_MAIL</a>
-				<a data-link="4" role="link" tabindex="0">BURN_MAIL</a>
-				<a data-link="5" role="link" tabindex="0">AI_INTERFACE</a>
-				<a data-link="6" role="link" tabindex="0">LOCAL_SERVER</a>
-			</div>
-
-			<div class="sector">
-				<span class="sector-title">/// SECTOR_02 [MEDIA]</span>
-				<a data-link="7" role="link" tabindex="0">VIDEO_SECTOR</a>
-				<a data-link="8" role="link" tabindex="0">MUSIC_APP</a>
-				<a data-link="9" role="link" tabindex="0">COM_CHANNEL</a>
-				<a data-link="10" role="link" tabindex="0">ANIME_SOURCE</a>
-				<a data-link="11" role="link" tabindex="0">MANGA_SOURCE</a>
-				<a data-link="12" role="link" tabindex="0">SWORD_ART_ONLINE</a>
-				<a data-link="13" role="link" tabindex="0">BUNNY_GIRL</a>
-				<a data-link="14" role="link" tabindex="0">RE:ZERO</a>
-				<a data-link="15" role="link" tabindex="0">GIMAI_SEIKATSU</a>
-			</div>
-
-			<div class="sector">
-				<span class="sector-title">/// SECTOR_03 [TOOLS]</span>
-				<a data-link="16" role="link" tabindex="0">MAIL_SERVER</a>
-				<a data-link="17" role="link" tabindex="0">ENCRYPTED_MAIL</a>
-				<a data-link="18" role="link" tabindex="0">PSN_STORE</a>
-				<a data-link="19" role="link" tabindex="0">TRANSLATOR</a>
-			</div>
+			<div id="link-sectors"></div>
 
 			<div class="sector-rawlogs sector">
-				<span class="sector-title">/// SECTOR_04 [LOGS]</span>
-				<div id="logs" style="color: var(--dim-color); font-size: 12px; line-height: 1.5;">
-					<!-- <p>> initializing protocols...</p>
-                    <p>> loading custom.css... OK</p>
-                    <p>> connection secure</p>
-                    <p>> waiting for input...</p> -->
+				<span class="sector-title">/// SYSTEM LOGS</span>
+				<div id="logs" role="region" aria-label="System and command logs" tabindex="0">
+
 				</div>
 			</div>
 		</div>
 
 		<div id="input-zone">
 			<span class="prompt-sign">/// </span>
-			<span id="username">Hendo: </span>
-			<input type="text" id="cmd" placeholder="exec search_query..." autofocus autocomplete="on">
+			<span id="username">hendo: </span>
+			<input type="text" aria-label="Command terminal" id="cmd"
+				placeholder="help / add media | name | https://..." autocomplete="off" autocapitalize="off" enterkeyhint="go" spellcheck="false" />
 		</div>
 	</div>
-	<script src="js/script.js"></script>
+	<script src="./js/script.js"></script>
 </body>
 
 </html>
